@@ -6,21 +6,17 @@
   <title>Admin Dashboard | Grievance Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800">
 
-  <!-- Password Authentication Modal -->
+  <!-- Password Authentication Gate Modal -->
   <div id="loginGate" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center border border-slate-100">
       <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
         🔒
       </div>
       <h2 class="text-xl font-bold text-slate-800 mb-1">Admin Access</h2>
-      <p class="text-slate-500 text-xs mb-5">Enter secret master key to unlock grievance logs.</p>
+      <p class="text-slate-500 text-xs mb-5">Enter your secret passkey to access the grievance dashboard.</p>
 
       <form id="authForm" class="space-y-3">
         <input type="password" id="adminPin" placeholder="Enter password" required
@@ -49,8 +45,9 @@
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h2 class="text-2xl font-bold text-slate-900">Manage Complaints</h2>
-          <p class="text-slate-500 text-sm">Real-time cloud database powered by Firebase Firestore.</p>
+          <p class="text-slate-500 text-sm">Review, track status, and resolve lodged complaints.</p>
         </div>
+        <!-- Status Filter & Clear -->
         <div class="flex gap-2">
           <select id="statusFilter" class="px-3 py-2 border rounded-lg text-sm bg-white outline-none">
             <option value="All">All Statuses</option>
@@ -58,10 +55,13 @@
             <option value="In Progress">In Progress</option>
             <option value="Resolved">Resolved</option>
           </select>
+          <button id="clearDataBtn" class="px-3 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-sm transition">
+            Reset Stored Data
+          </button>
         </div>
       </div>
 
-      <!-- Metric Stats -->
+      <!-- Stats Overview -->
       <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <p class="text-xs uppercase text-slate-400 font-semibold">Total Complaints</p>
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <!-- Table -->
+      <!-- Table of Complaints -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
         <table class="w-full text-left border-collapse text-sm">
           <thead class="bg-slate-100 border-b border-slate-200 text-slate-600">
@@ -95,10 +95,12 @@
               <th class="p-3 font-semibold">Action</th>
             </tr>
           </thead>
-          <tbody id="complaintsTableBody" class="divide-y divide-slate-100"></tbody>
+          <tbody id="complaintsTableBody" class="divide-y divide-slate-100">
+            <!-- Rendered by JavaScript -->
+          </tbody>
         </table>
         <div id="noDataMessage" class="hidden text-center py-8 text-slate-400">
-          No complaints found.
+          No complaints recorded yet.
         </div>
       </div>
     </main>
