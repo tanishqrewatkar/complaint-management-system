@@ -1,20 +1,23 @@
-// Pre-configured with your Firebase credentials
+// Firebase Configuration from your new project
 const firebaseConfig = {
-  apiKey: "AIzaSyAn650Dejf3hWcFXlhRmiw7jQCMFM26J2A",
-  authDomain: "complaint-system-3cb17.firebaseapp.com",
-  projectId: "complaint-system-3cb17",
-  storageBucket: "complaint-system-3cb17.firebasestorage.app",
-  messagingSenderId: "695979265426",
-  appId: "1:695979265426:web:1497bc7cbd94980ad3454b"
+  apiKey: "AIzaSyCz8Lo1G55MOX245oMthdurEHtpmRYuhCs",
+  authDomain: "my-complaint-portal-c2ee9.firebaseapp.com",
+  projectId: "my-complaint-portal-c2ee9",
+  storageBucket: "my-complaint-portal-c2ee9.firebasestorage.app",
+  messagingSenderId: "212092118893",
+  appId: "1:212092118893:web:96301614df10fa0a83dc64"
 };
 
+// Initialize Firebase & Firestore
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Admin Passkey
+// Admin Master Password
 const MASTER_PIN = "Admin@2026";
 
-// Submission Logic
+// ------------------------------------
+// 1. Complaint Submission Flow (index.html)
+// ------------------------------------
 const complaintForm = document.getElementById('complaintForm');
 if (complaintForm) {
   complaintForm.addEventListener('submit', async (e) => {
@@ -55,7 +58,9 @@ if (complaintForm) {
   });
 }
 
-// Admin Real-time Dashboard Logic
+// ------------------------------------
+// 2. Admin Dashboard Flow (dashboard.html)
+// ------------------------------------
 const loginGate = document.getElementById('loginGate');
 const adminPanel = document.getElementById('adminPanel');
 const authForm = document.getElementById('authForm');
@@ -69,6 +74,7 @@ let globalComplaints = [];
 function fetchRealtimeComplaints() {
   if (!tableBody) return;
 
+  // Real-time Firestore snapshot listener
   db.collection("complaints").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
     globalComplaints = [];
     snapshot.forEach((doc) => {
@@ -83,6 +89,7 @@ function fetchRealtimeComplaints() {
 function renderTable() {
   const filter = statusFilter ? statusFilter.value : 'All';
 
+  // Update Counters
   document.getElementById('statTotal').textContent = globalComplaints.length;
   document.getElementById('statPending').textContent = globalComplaints.filter(c => c.status === 'Pending').length;
   document.getElementById('statProgress').textContent = globalComplaints.filter(c => c.status === 'In Progress').length;
@@ -157,6 +164,7 @@ if (statusFilter) {
   statusFilter.addEventListener('change', renderTable);
 }
 
+// Authentication gate
 function unlockAdmin() {
   if (loginGate) loginGate.classList.add('hidden');
   if (adminPanel) adminPanel.classList.remove('hidden');
