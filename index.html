@@ -22,11 +22,11 @@
     <h2 class="text-2xl font-bold text-slate-900 mb-2">Register a New Complaint</h2>
     <p class="text-slate-500 mb-6 text-sm">Fill in the details below. You will receive an immediate confirmation upon submission.</p>
 
-    <!-- Success / Error Notice Box -->
+    <!-- Notification Alert Box -->
     <div id="alertBox" class="hidden mb-4 p-4 rounded-lg text-sm font-medium"></div>
 
     <form id="complaintForm" class="space-y-4">
-      <!-- Your Web3Forms Access Key -->
+      <!-- Web3Forms Access Key & Settings -->
       <input type="hidden" name="access_key" value="c6bc7189-b145-4799-9188-fd9931300a62" />
       <input type="hidden" name="subject" value="New Grievance Registered - HelpDesk Portal" />
       <input type="hidden" name="from_name" value="Complaint Portal Bot" />
@@ -35,12 +35,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-          <input type="text" name="Complainant_Name" required placeholder="e.g. Rahul Sharma"
+          <input type="text" id="fullName" name="Complainant_Name" required placeholder="e.g. Rahul Sharma"
             class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Email / Phone</label>
-          <input type="text" name="Contact_Details" required placeholder="name@example.com or phone"
+          <input type="text" id="contact" name="Contact_Details" required placeholder="name@example.com or phone"
             class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
         </div>
       </div>
@@ -48,7 +48,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
-          <select name="Complaint_Category" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          <select id="category" name="Complaint_Category" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
             <option value="">Select Category</option>
             <option value="Electricity / Power">Electricity / Power</option>
             <option value="Water Supply">Water Supply</option>
@@ -60,7 +60,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Priority Level</label>
-          <select name="Priority_Level" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+          <select id="priority" name="Priority_Level" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
             <option value="Low">Low</option>
             <option value="Medium" selected>Medium</option>
             <option value="High">High</option>
@@ -71,13 +71,13 @@
 
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-1">Complaint Title</label>
-        <input type="text" name="Complaint_Title" required placeholder="Short summary of the issue"
+        <input type="text" id="subject" name="Complaint_Title" required placeholder="Short summary of the issue"
           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
       </div>
 
       <div>
         <label class="block text-sm font-medium text-slate-700 mb-1">Detailed Description</label>
-        <textarea name="Complaint_Description" rows="4" required placeholder="Describe the issue in detail"
+        <textarea id="description" name="Complaint_Description" rows="4" required placeholder="Describe the issue in detail"
           class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
       </div>
 
