@@ -1,0 +1,17 @@
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+}
+.status-Pending { background-color: #fef3c7; color: #92400e; }
+.status-InProgress { background-color: #dbeafe; color: #1e40af; }
+.status-Resolved { background-color: #dcfce7; color: #166534; }
+.priority-Urgent { color: #dc2626; font-weight: 700; }
+.priority-High { color: #ea580c; font-weight: 600; }
+.priority-Medium { color: #ca8a04; }
+.priority-Low { color: #16a34a; }
