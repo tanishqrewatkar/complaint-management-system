@@ -1,92 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Citizen Complaint Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Grievance & Complaint Portal</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- Navigation -->
-  <nav class="bg-indigo-700 text-white shadow-md">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-      <h1 class="text-xl font-bold tracking-wide">HelpDesk | Grievance Portal</h1>
-      <span class="text-xs bg-indigo-800 text-indigo-200 px-3 py-1 rounded-full font-medium">Public Submission</span>
+  <!-- Header / Navigation Bar -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-lg font-bold tracking-tight text-slate-900 block leading-tight">CivicWatch</span>
+          <span class="text-xs text-slate-500 font-medium">Public Grievance Redressal System</span>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center space-x-2 text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Redressal Desk Active</span>
+      </div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Main Container -->
-  <main class="max-w-3xl mx-auto my-10 p-6 bg-white rounded-xl shadow-sm border border-slate-200">
-    <h2 class="text-2xl font-bold text-slate-900 mb-2">Register a New Complaint</h2>
-    <p class="text-slate-500 mb-6 text-sm">Fill in the details below. You will receive an immediate confirmation upon submission.</p>
+  <!-- Main Content Container -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-grow">
+    <!-- Hero / Information Banner -->
+    <div class="mb-8 text-center sm:text-left">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Submit a Grievance</h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600">
+        File your issue directly with municipal and public administration. Every grievance is assigned a permanent tracking ID and forwarded immediately to the oversight desk.
+      </p>
+    </div>
 
-    <!-- Notification Alert Box -->
-    <div id="alertBox" class="hidden mb-4 p-4 rounded-lg text-sm font-medium"></div>
-
-    <form id="complaintForm" class="space-y-4">
-      <!-- Web3Forms Access Key & Settings -->
-      <input type="hidden" name="access_key" value="c6bc7189-b145-4799-9188-fd9931300a62" />
-      <input type="hidden" name="subject" value="New Grievance Registered - HelpDesk Portal" />
-      <input type="hidden" name="from_name" value="Complaint Portal Bot" />
-      <input type="hidden" id="trackingIdInput" name="Tracking_ID" value="" />
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-          <input type="text" id="fullName" name="Complainant_Name" required placeholder="e.g. Rahul Sharma"
-            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+    <!-- Inline Success Notification (Hidden by default) -->
+    <div id="successAlert" class="hidden mb-8 p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 transition-all duration-300 shadow-sm">
+      <div class="flex items-start space-x-4">
+        <div class="p-2 bg-emerald-100 rounded-lg text-emerald-700">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Email / Phone</label>
-          <input type="text" id="contact" name="Contact_Details" required placeholder="name@example.com or phone"
-            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
-          <select id="category" name="Complaint_Category" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            <option value="">Select Category</option>
-            <option value="Electricity / Power">Electricity / Power</option>
-            <option value="Water Supply">Water Supply</option>
-            <option value="Roads & Infrastructure">Roads & Infrastructure</option>
-            <option value="Sanitation & Waste">Sanitation & Waste</option>
-            <option value="Academic / College">Academic / College</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">Priority Level</label>
-          <select id="priority" name="Priority_Level" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
-            <option value="Low">Low</option>
-            <option value="Medium" selected>Medium</option>
-            <option value="High">High</option>
-            <option value="Urgent">Urgent</option>
-          </select>
+        <div class="flex-1">
+          <h3 class="text-base font-bold text-emerald-900">Complaint Registered Successfully!</h3>
+          <p class="text-sm text-emerald-800 mt-1">
+            Your grievance has been logged and transmitted to the administration. Please note down your tracking identifier:
+          </p>
+          <div class="mt-3 flex flex-wrap items-center gap-3">
+            <div class="inline-flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg border border-emerald-300 font-mono font-bold text-slate-900 text-base shadow-sm">
+              <span id="displayTrackingId">CMP-000000</span>
+            </div>
+            <button type="button" id="copyIdBtn" class="text-xs bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-3 py-1.5 rounded-md transition duration-150">
+              Copy Tracking ID
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Complaint Title</label>
-        <input type="text" id="subject" name="Complaint_Title" required placeholder="Short summary of the issue"
-          class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" />
+    <!-- Grievance Submission Card Form -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <form id="complaintForm" class="space-y-6" novalidate>
+          
+          <!-- Hidden Access Key for Web3Forms -->
+          <input type="hidden" name="access_key" id="access_key" value="c6bc7189-b145-4799-9188-fd9931300a62">
+          
+          <!-- Identity Fields: Row 1 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="fullName" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+                Full Name <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="fullName" name="name" required placeholder="Jane Doe"
+                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition placeholder-slate-400">
+            </div>
+
+            <div>
+              <label for="contact" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+                Email Address or Phone <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="contact" name="contact" required placeholder="jane@example.com or +1234567890"
+                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition placeholder-slate-400">
+            </div>
+          </div>
+
+          <!-- Taxonomy Fields: Row 2 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="category" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+                Grievance Category <span class="text-rose-500">*</span>
+              </label>
+              <select id="category" name="category" required
+                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-white text-slate-700">
+                <option value="" disabled selected>Select an operational category</option>
+                <option value="Electricity">Electricity & Street Lights</option>
+                <option value="Water">Water Supply & Pipelines</option>
+                <option value="Roads">Roads & Traffic Infrastructure</option>
+                <option value="Sanitation">Sanitation & Waste Disposal</option>
+                <option value="College">College / Educational Facilities</option>
+                <option value="Other">Other Civil Matters</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="priority" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+                Priority Level <span class="text-rose-500">*</span>
+              </label>
+              <select id="priority" name="priority" required
+                class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-white text-slate-700">
+                <option value="Low">Low - Normal processing</option>
+                <option value="Medium" selected>Medium - General concern</option>
+                <option value="High">High - Prompt action needed</option>
+                <option value="Urgent">Urgent - Immediate safety hazard</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Subject Title: Row 3 -->
+          <div>
+            <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+              Grievance Subject / Headline <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="subject" name="subject" required placeholder="e.g., Continuous water leakage on 4th Main Road"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition placeholder-slate-400">
+          </div>
+
+          <!-- Detailed Description: Row 4 -->
+          <div>
+            <label for="description" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+              Detailed Description <span class="text-rose-500">*</span>
+            </label>
+            <textarea id="description" name="description" rows="5" required placeholder="Provide landmark, duration of the issue, and specific impact details..."
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition placeholder-slate-400"></textarea>
+          </div>
+
+          <!-- Form Action Button -->
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-end">
+            <button type="submit" id="submitBtn"
+              class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition duration-150 cursor-pointer disabled:opacity-50">
+              <span id="btnText">Submit Grievance</span>
+              <svg id="btnSpinner" class="hidden animate-spin ml-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
       </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1">Detailed Description</label>
-        <textarea id="description" name="Complaint_Description" rows="4" required placeholder="Describe the issue in detail"
-          class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-      </div>
-
-      <button type="submit" id="submitBtn" class="w-full py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
-        Submit Grievance
-      </button>
-    </form>
+    </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-5xl mx-auto px-4">
+      <p>&copy; 2026 CivicWatch Grievance Redressal Framework. All submissions recorded under public access provisions.</p>
+    </div>
+  </footer>
+
+  <!-- Unified JavaScript -->
   <script src="app.js"></script>
 </body>
 </html>

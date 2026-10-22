@@ -1,111 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | Grievance Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrator Dashboard - Grievance Desk</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen">
 
-  <!-- Password Authentication Gate Modal -->
-  <div id="loginGate" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center border border-slate-100">
-      <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-        🔒
+  <!-- ================= AUTHENTICATION MODAL GATE ================= -->
+  <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-200">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-slate-900">Admin Authentication</h2>
+        <p class="text-xs text-slate-500 mt-1">Please enter the administrative passcode to access records.</p>
       </div>
-      <h2 class="text-xl font-bold text-slate-800 mb-1">Admin Access</h2>
-      <p class="text-slate-500 text-xs mb-5">Enter your secret passkey to access the grievance dashboard.</p>
 
-      <form id="authForm" class="space-y-3">
-        <input type="password" id="adminPin" placeholder="Enter password" required
-          class="w-full text-center px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none font-mono" />
-        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm transition">
+      <form id="authForm" class="space-y-4">
+        <div>
+          <label for="adminPasscode" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1">
+            Access Code
+          </label>
+          <input type="password" id="adminPasscode" required placeholder="Enter administrative passcode"
+            class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition font-mono">
+        </div>
+        <p id="authError" class="hidden text-xs text-rose-600 font-medium"></p>
+        <button type="submit"
+          class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow transition duration-150">
           Unlock Dashboard
         </button>
       </form>
-      <p id="authError" class="text-xs text-red-500 font-medium mt-3 hidden">Incorrect passcode. Access denied.</p>
     </div>
   </div>
 
-  <!-- Protected Admin Content -->
-  <div id="adminPanel" class="hidden">
-    <nav class="bg-slate-900 text-white shadow-md">
-      <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-        <h1 class="text-lg font-bold tracking-wide text-indigo-400">Admin Control Center</h1>
-        <div class="flex items-center gap-3">
-          <a href="index.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-md transition">Public Form</a>
-          <button id="logoutBtn" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md transition">Lock & Logout</button>
+  <!-- ================= DASHBOARD INTERFACE ================= -->
+  <div id="dashboardContainer" class="hidden flex flex-col min-h-screen">
+    
+    <!-- Top Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-base font-bold text-slate-900 leading-tight">Admin Grievance Operations</h1>
+            <p class="text-xs text-slate-500">Master Record Management & Auditing</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <button id="resetAllBtn" type="button"
+            class="text-xs font-semibold px-3 py-1.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 transition">
+            Clear All Records
+          </button>
+          <button id="logoutBtn" type="button"
+            class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 text-white hover:bg-slate-900 transition">
+            Lock Session
+          </button>
         </div>
       </div>
-    </nav>
+    </header>
 
-    <main class="max-w-7xl mx-auto my-8 p-6">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div>
-          <h2 class="text-2xl font-bold text-slate-900">Manage Complaints</h2>
-          <p class="text-slate-500 text-sm">Review, track status, and resolve lodged complaints.</p>
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
+      
+      <!-- Metric Cards Grid -->
+      <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <!-- Total Complaints -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Grievances</span>
+            <span class="p-1.5 rounded-md bg-slate-100 text-slate-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </span>
+          </div>
+          <p id="totalCount" class="text-2xl font-black text-slate-900 mt-2">0</p>
         </div>
-        <!-- Status Filter & Clear -->
-        <div class="flex gap-2">
-          <select id="statusFilter" class="px-3 py-2 border rounded-lg text-sm bg-white outline-none">
+
+        <!-- Pending Count -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Pending Review</span>
+            <span class="p-1.5 rounded-md bg-amber-50 text-amber-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+          </div>
+          <p id="pendingCount" class="text-2xl font-black text-amber-600 mt-2">0</p>
+        </div>
+
+        <!-- In Progress Count -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-700">In Progress</span>
+            <span class="p-1.5 rounded-md bg-blue-50 text-blue-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </span>
+          </div>
+          <p id="inProgressCount" class="text-2xl font-black text-blue-600 mt-2">0</p>
+        </div>
+
+        <!-- Resolved Count -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Resolved</span>
+            <span class="p-1.5 rounded-md bg-emerald-50 text-emerald-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+          </div>
+          <p id="resolvedCount" class="text-2xl font-black text-emerald-600 mt-2">0</p>
+        </div>
+      </section>
+
+      <!-- Filter Controls Toolbar -->
+      <section class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <label for="statusFilter" class="text-xs font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap">Filter Status:</label>
+          <select id="statusFilter"
+            class="px-3 py-1.5 rounded-lg border border-slate-300 text-sm font-medium text-slate-700 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="All">All Statuses</option>
             <option value="Pending">Pending</option>
             <option value="In Progress">In Progress</option>
             <option value="Resolved">Resolved</option>
           </select>
-          <button id="clearDataBtn" class="px-3 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-sm transition">
-            Reset Stored Data
-          </button>
         </div>
-      </div>
+        <div class="text-xs text-slate-400">
+          Showing real-time records synchronized from Local Storage.
+        </div>
+      </section>
 
-      <!-- Stats Overview -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-          <p class="text-xs uppercase text-slate-400 font-semibold">Total Complaints</p>
-          <h3 id="statTotal" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+      <!-- Data Table Card -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="py-3 px-4">Tracking ID / Date</th>
+                <th class="py-3 px-4">Citizen</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Subject & Details</th>
+                <th class="py-3 px-4">Priority</th>
+                <th class="py-3 px-4">Status & Control</th>
+                <th class="py-3 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="complaintsTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
+              <!-- Dynamically Populated By app.js -->
+            </tbody>
+          </table>
         </div>
-        <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm">
-          <p class="text-xs uppercase text-amber-500 font-semibold">Pending</p>
-          <h3 id="statPending" class="text-2xl font-bold text-amber-600 mt-1">0</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl border border-blue-200 shadow-sm">
-          <p class="text-xs uppercase text-blue-500 font-semibold">In Progress</p>
-          <h3 id="statProgress" class="text-2xl font-bold text-blue-600 mt-1">0</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl border border-emerald-200 shadow-sm">
-          <p class="text-xs uppercase text-emerald-500 font-semibold">Resolved</p>
-          <h3 id="statResolved" class="text-2xl font-bold text-emerald-600 mt-1">0</h3>
-        </div>
-      </div>
 
-      <!-- Table of Complaints -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-        <table class="w-full text-left border-collapse text-sm">
-          <thead class="bg-slate-100 border-b border-slate-200 text-slate-600">
-            <tr>
-              <th class="p-3 font-semibold">ID / Date</th>
-              <th class="p-3 font-semibold">Complainant</th>
-              <th class="p-3 font-semibold">Category</th>
-              <th class="p-3 font-semibold">Subject & Description</th>
-              <th class="p-3 font-semibold">Priority</th>
-              <th class="p-3 font-semibold">Status</th>
-              <th class="p-3 font-semibold">Action</th>
-            </tr>
-          </thead>
-          <tbody id="complaintsTableBody" class="divide-y divide-slate-100">
-            <!-- Rendered by JavaScript -->
-          </tbody>
-        </table>
-        <div id="noDataMessage" class="hidden text-center py-8 text-slate-400">
-          No complaints recorded yet.
+        <!-- Empty State UI -->
+        <div id="emptyState" class="hidden py-16 text-center">
+          <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          <h3 class="mt-2 text-sm font-semibold text-slate-900">No Complaints Recorded</h3>
+          <p class="mt-1 text-xs text-slate-500">There are no grievances registered or matching the current filter.</p>
         </div>
       </div>
     </main>
   </div>
 
+  <!-- Unified JavaScript -->
   <script src="app.js"></script>
 </body>
 </html>
